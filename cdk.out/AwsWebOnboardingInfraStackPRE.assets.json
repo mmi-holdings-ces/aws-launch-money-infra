@@ -1,0 +1,20 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "634086f18d6d80db75f4da6540f09012cc18c0a9d08d47bde8dccc7436d1f5fe": {
+      "source": {
+        "path": "AwsWebOnboardingInfraStackPRE.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "737245153745-af-south-1": {
+          "bucketName": "cdk-hnb659fds-assets-737245153745-af-south-1",
+          "objectKey": "634086f18d6d80db75f4da6540f09012cc18c0a9d08d47bde8dccc7436d1f5fe.json",
+          "region": "af-south-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::737245153745:role/cdk-hnb659fds-file-publishing-role-737245153745-af-south-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

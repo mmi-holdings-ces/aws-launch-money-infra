@@ -1,0 +1,330 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "LaunchmoneyInfraStackPROD": {
+        "id": "LaunchmoneyInfraStackPROD",
+        "path": "LaunchmoneyInfraStackPROD",
+        "children": {
+          "MoneyCfFunctionPROD": {
+            "id": "MoneyCfFunctionPROD",
+            "path": "LaunchmoneyInfraStackPROD/MoneyCfFunctionPROD",
+            "children": {
+              "LaunchMoneyFunctionprod": {
+                "id": "LaunchMoneyFunctionprod",
+                "path": "LaunchmoneyInfraStackPROD/MoneyCfFunctionPROD/LaunchMoneyFunctionprod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "LaunchmoneyInfraStackPROD/MoneyCfFunctionPROD/LaunchMoneyFunctionprod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "autoPublish": true,
+                        "functionCode": "function handler (event) {\n    var request = event.request;\n    var uri = request.uri;\n    \n    if (!uri.match('^.*\\.(dart|json|css|js|png|PNG|jpg|JPG|gif|GIF|svg|woff|woff2|ttf|otf|wasm)$')) {\n        request.uri = '/index.html';\n    }\n    \n\n    return request;\n}\n",
+                        "functionConfig": {
+                          "comment": "web-onboarding-spa",
+                          "runtime": "cloudfront-js-1.0"
+                        },
+                        "name": "web-onboarding-spa"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnFunction",
+                      "version": "2.130.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.Function",
+                  "version": "2.130.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "MoneyCfPROD": {
+            "id": "MoneyCfPROD",
+            "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD",
+            "children": {
+              "LaunchMoneyRedirectSpaPROD": {
+                "id": "LaunchMoneyRedirectSpaPROD",
+                "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyRedirectSpaPROD",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.130.0"
+                }
+              },
+              "LaunchMoneyOnboardingBucketPROD": {
+                "id": "LaunchMoneyOnboardingBucketPROD",
+                "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "AES256"
+                              }
+                            }
+                          ]
+                        },
+                        "bucketName": "launch-web-onboarding-prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.130.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:GetObject",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "CanonicalUser": {
+                                      "Fn::GetAtt": [
+                                        "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD",
+                                        "S3CanonicalUserId"
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.130.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.130.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.130.0"
+                }
+              },
+              "LaunchMoneyCertPROD": {
+                "id": "LaunchMoneyCertPROD",
+                "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyCertPROD",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.130.0"
+                }
+              },
+              "LaunchMoneyDistroPROD": {
+                "id": "LaunchMoneyDistroPROD",
+                "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD",
+                "children": {
+                  "Origin1": {
+                    "id": "Origin1",
+                    "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Origin1",
+                    "children": {
+                      "S3Origin": {
+                        "id": "S3Origin",
+                        "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Origin1/S3Origin",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Origin1/S3Origin/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                              "aws:cdk:cloudformation:props": {
+                                "cloudFrontOriginAccessIdentityConfig": {
+                                  "comment": "Identity for LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                              "version": "2.130.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                          "version": "2.130.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.3.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                      "aws:cdk:cloudformation:props": {
+                        "distributionConfig": {
+                          "enabled": true,
+                          "origins": [
+                            {
+                              "domainName": {
+                                "Fn::GetAtt": [
+                                  "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3",
+                                  "RegionalDomainName"
+                                ]
+                              },
+                              "id": "LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499",
+                              "s3OriginConfig": {
+                                "originAccessIdentity": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "origin-access-identity/cloudfront/",
+                                      {
+                                        "Ref": "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "defaultCacheBehavior": {
+                            "pathPattern": "*",
+                            "targetOriginId": "LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499",
+                            "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                            "compress": true,
+                            "viewerProtocolPolicy": "allow-all",
+                            "functionAssociations": [
+                              {
+                                "functionArn": "arn:aws:cloudfront::081138765061:function/web-onboarding-spa",
+                                "eventType": "viewer-request"
+                              }
+                            ]
+                          },
+                          "aliases": [
+                            "join.momentummoney.co.za"
+                          ],
+                          "httpVersion": "http2",
+                          "ipv6Enabled": true,
+                          "viewerCertificate": {
+                            "acmCertificateArn": "arn:aws:acm:us-east-1:081138765061:certificate/e7699389-f1db-4b82-bfb1-517133d29dc7",
+                            "minimumProtocolVersion": "TLSv1.2_2021",
+                            "sslSupportMethod": "sni-only"
+                          }
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                      "version": "2.130.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+                  "version": "2.130.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "LaunchmoneyInfraStackPROD/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "LaunchmoneyInfraStackPROD/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.130.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "LaunchmoneyInfraStackPROD/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.130.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "LaunchmoneyInfraStackPROD/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.130.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.130.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.130.0"
+    }
+  }
+}

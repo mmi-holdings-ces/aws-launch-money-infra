@@ -1,0 +1,177 @@
+{
+ "Resources": {
+  "MoneyCfPRELaunchMoneyOnboardingBucketPRE7B7A56D1": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": "launch-web-onboarding-pre"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AwsWebOnboardingInfraStackPRE/MoneyCfPRE/LaunchMoneyOnboardingBucketPRE/Resource"
+   }
+  },
+  "MoneyCfPRELaunchMoneyOnboardingBucketPREPolicy0E49AC2C": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "MoneyCfPRELaunchMoneyOnboardingBucketPRE7B7A56D1"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "MoneyCfPRELaunchMoneyDistroPREOrigin1S3Origin9B4323BC",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "MoneyCfPRELaunchMoneyOnboardingBucketPRE7B7A56D1",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsWebOnboardingInfraStackPRE/MoneyCfPRE/LaunchMoneyOnboardingBucketPRE/Policy/Resource"
+   }
+  },
+  "MoneyCfPRELaunchMoneyDistroPREOrigin1S3Origin9B4323BC": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Identity for AwsWebOnboardingInfraStackPREMoneyCfPRELaunchMoneyDistroPREOrigin12B2DFC38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsWebOnboardingInfraStackPRE/MoneyCfPRE/LaunchMoneyDistroPRE/Origin1/S3Origin/Resource"
+   }
+  },
+  "MoneyCfPRELaunchMoneyDistroPRECA1B9563": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "Aliases": [
+      "pre-join.momentummoney.co.za"
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+      "Compress": true,
+      "FunctionAssociations": [
+       {
+        "EventType": "viewer-request",
+        "FunctionARN": "arn:aws:cloudfront::737245153745:function/web-onboarding-spa"
+       }
+      ],
+      "TargetOriginId": "AwsWebOnboardingInfraStackPREMoneyCfPRELaunchMoneyDistroPREOrigin12B2DFC38",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "MoneyCfPRELaunchMoneyOnboardingBucketPRE7B7A56D1",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "AwsWebOnboardingInfraStackPREMoneyCfPRELaunchMoneyDistroPREOrigin12B2DFC38",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "MoneyCfPRELaunchMoneyDistroPREOrigin1S3Origin9B4323BC"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "ViewerCertificate": {
+      "AcmCertificateArn": "arn:aws:acm:us-east-1:737245153745:certificate/dd01e7f8-d183-4611-b343-4142888d7386",
+      "MinimumProtocolVersion": "TLSv1.2_2021",
+      "SslSupportMethod": "sni-only"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsWebOnboardingInfraStackPRE/MoneyCfPRE/LaunchMoneyDistroPRE/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/3WOwQ6CMBBEv8V7WUEOelWMiScNfoCBbTEL2CbdVmOa/rsgGr14mtnZfZNdQJankM6qOycou6SnGsLJVdiJUrHxFpUYdufAOYSNx045UTT67SY5mp7w8Y2nOQrsjZeNNdpB2BI7S7V3ZLQ4WLqQXiMq5r1U2pF74cUI7Ebg38VvTYxj8vkyCm2kgpbnt2wF2RKyWctEifUDfFVQTvoE9LN90/AAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsWebOnboardingInfraStackPRE/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

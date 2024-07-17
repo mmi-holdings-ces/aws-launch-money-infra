@@ -1,0 +1,95 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "LaunchmoneyInfraStackPROD.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "LaunchmoneyInfraStackPROD.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "LaunchmoneyInfraStackPROD": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://081138765061/af-south-1",
+      "properties": {
+        "templateFile": "LaunchmoneyInfraStackPROD.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::081138765061:role/cdk-hnb659fds-deploy-role-081138765061-af-south-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::081138765061:role/cdk-hnb659fds-cfn-exec-role-081138765061-af-south-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-081138765061-af-south-1/fbb1bc75ba1a265b5da8d7cee4f21652fef057734f85bf153a065d9791dd17d0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "LaunchmoneyInfraStackPROD.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::081138765061:role/cdk-hnb659fds-lookup-role-081138765061-af-south-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "LaunchmoneyInfraStackPROD.assets"
+      ],
+      "metadata": {
+        "/LaunchmoneyInfraStackPROD/MoneyCfFunctionPROD/LaunchMoneyFunctionprod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoneyCfFunctionPRODLaunchMoneyFunctionprod29D785BB"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoneyCfPRODLaunchMoneyOnboardingBucketPRODPolicy9FD0EAC0"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Origin1/S3Origin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoneyCfPRODLaunchMoneyDistroPRODA638DE84"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/LaunchmoneyInfraStackPROD/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "LaunchmoneyInfraStackPROD"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

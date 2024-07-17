@@ -1,0 +1,62 @@
+{
+ "Resources": {
+  "MoneyCfFunctionPRODLaunchMoneyFunctionprod29D785BB": {
+   "Type": "AWS::CloudFront::Function",
+   "Properties": {
+    "AutoPublish": true,
+    "FunctionCode": "function handler (event) {\n    var request = event.request;\n    var uri = request.uri;\n    \n    if (!uri.match('^.*\\.(dart|json|css|js|png|PNG|jpg|JPG|gif|GIF|svg|woff|woff2|ttf|otf|wasm)$')) {\n        request.uri = '/index.html';\n    }\n    \n\n    return request;\n}\n",
+    "FunctionConfig": {
+     "Comment": "web-onboarding-spa",
+     "Runtime": "cloudfront-js-1.0"
+    },
+    "Name": "web-onboarding-spa"
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchMoneyInfraStackPROD/MoneyCfFunctionPROD/LaunchMoneyFunctionprod/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWIOwqEMBBAz2KfjEYL7YU9gHuARScRxs8M5LMW4t1VxOp9SjBVAUXWb0GjnfVCA+zf2OOsrvXDRZIdvXCE/ZMYIwmrduTXjzs6FyR5dIdisQ6mkP9NA6YGk02BSPvEkVYH3cMT/437KHMAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchMoneyInfraStackPROD/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

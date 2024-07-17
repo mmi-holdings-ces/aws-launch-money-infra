@@ -1,0 +1,192 @@
+{
+ "Resources": {
+  "MoneyCfFunctionPRODLaunchMoneyFunctionprod29D785BB": {
+   "Type": "AWS::CloudFront::Function",
+   "Properties": {
+    "AutoPublish": true,
+    "FunctionCode": "function handler (event) {\n    var request = event.request;\n    var uri = request.uri;\n    \n    if (!uri.match('^.*\\.(dart|json|css|js|png|PNG|jpg|JPG|gif|GIF|svg|woff|woff2|ttf|otf|wasm)$')) {\n        request.uri = '/index.html';\n    }\n    \n\n    return request;\n}\n",
+    "FunctionConfig": {
+     "Comment": "web-onboarding-spa",
+     "Runtime": "cloudfront-js-1.0"
+    },
+    "Name": "web-onboarding-spa"
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/MoneyCfFunctionPROD/LaunchMoneyFunctionprod/Resource"
+   }
+  },
+  "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": "launch-web-onboarding-prod"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Resource"
+   }
+  },
+  "MoneyCfPRODLaunchMoneyOnboardingBucketPRODPolicy9FD0EAC0": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyOnboardingBucketPROD/Policy/Resource"
+   }
+  },
+  "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Identity for LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Origin1/S3Origin/Resource"
+   }
+  },
+  "MoneyCfPRODLaunchMoneyDistroPRODA638DE84": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "Aliases": [
+      "join.momentummoney.co.za"
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "FunctionAssociations": [
+       {
+        "EventType": "viewer-request",
+        "FunctionARN": "arn:aws:cloudfront::081138765061:function/web-onboarding-spa"
+       }
+      ],
+      "TargetOriginId": "LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "MoneyCfPRODLaunchMoneyOnboardingBucketPROD639117A3",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "LaunchmoneyInfraStackPRODMoneyCfPRODLaunchMoneyDistroPRODOrigin12CB99499",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "MoneyCfPRODLaunchMoneyDistroPRODOrigin1S3Origin30A779DD"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "ViewerCertificate": {
+      "AcmCertificateArn": "arn:aws:acm:us-east-1:081138765061:certificate/e7699389-f1db-4b82-bfb1-517133d29dc7",
+      "MinimumProtocolVersion": "TLSv1.2_2021",
+      "SslSupportMethod": "sni-only"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/MoneyCfPROD/LaunchMoneyDistroPROD/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/3VNyQ6CMBD9Fu5lpHLQq2JIPGnwAwwMxQxgm3TRkIZ/l4rbxdNb894SeJpAEpV3E2PdxT1V4E+2xI5N1tljr1zdaCUt+NxJtKQkyxr54TsyVlPlnuKg6UJygyiM2ddCWrJDaGdhJQ8r/xq/MyMzKfitw07YkL3YDEfVEw5fe9bjyAphlNMoQvTmI5OqFtCaxY2vga+AR60hirWbjq8CihkfVtPq7AUBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "LaunchmoneyInfraStackPROD/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
