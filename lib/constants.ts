@@ -43,7 +43,7 @@ export class Account {
     static readonly FUNCTION_NAME: string = 'web-onboarding-spa'
     static readonly FUNCTION_ARN: string = 'FUNCTION_ARN'
 
-    private static DOMAIN: string = 'join.momentummoney.co.za'
+    private static DOMAIN: string = 'launch.momentummoney.co.za'
 
     private static PRE_CERT_ARN: string = 'arn:aws:acm:us-east-1:737245153745:certificate/dd01e7f8-d183-4611-b343-4142888d7386'
     private static PRE_FUNCTION_ARN: string = 'arn:aws:cloudfront::737245153745:function/web-onboarding-spa'
